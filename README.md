@@ -1,64 +1,89 @@
-# Nurse-Scheduling-Optimization
-# Nurse Scheduling Optimization - Homework 3
+# Nurse Scheduling Optimization Report 
 
-This repository contains code and analysis for Homework 3 of the Computational Operations Research course. The goal was to build, solve, and analyze a Mixed Integer Programming model that assigns nurses to hospital shifts under real-world constraints.
-
----
-
-## 📁 Files Included
-- `nurses_assignment_problem.ipynb`: Jupyter notebook implementing the optimization model and visualization.
-- `Data_Nurses_Assignment_Problem.xlsx`: Dataset including shift details, skills, vacations, and nurse info.
-- `hw3.pdf`: Final report PDF with analysis, graphs, and conclusions.
+### Course: Computational Operations Research (MATH 4320/8326)  
+### Author: Md Tahidul Islam  
+### Institution: University of Nebraska at Omaha  
+### Semester: Spring 2025  
 
 ---
 
-## 📌 Objectives
-1. **Formulate the nurse assignment problem** using constraints A–F based on real data.
-2. **Analyze the impact of each constraint** on worktime distribution and cost.
-3. **Perform sensitivity analysis** to identify what changes break feasibility.
+## 1. Problem Description
+
+The objective of this project is to formulate and solve a realistic nurse scheduling optimization problem using Mixed Integer Programming (MIP). The model aims to assign a set of nurses to a weekly schedule of shifts across various hospital departments while minimizing total labor cost and satisfying complex scheduling, skill, and policy constraints.
 
 ---
 
-## 🔧 Constraints Implemented
-- **A:** No more than two consecutive shifts per nurse.
-- **B:** Average qualification of assigned nurses per shift ≤ 3.
-- **C:** Average seniority per shift ≥ 4.
-- **D:** Each department must meet its skill coverage requirements.
-- **E:** Every nurse must work at least 30 hours per week.
-- **F:** Night shifts (8pm–8am) incur 1.5x pay rate.
+## 2. Data Summary
+
+The dataset includes:
+- **Nurses**: Name, pay rate, qualification level, seniority.
+- **Shifts**: Start/end times, department, day of the week, required number of nurses.
+- **Skills**: Required skills for departments and nurse-specific skills.
+- **Additional Constraints**: Nurse incompatibilities, preferred associations, vacation days.
 
 ---
 
-## 📈 Results Summary
-- **Before vs After Constraints:**
-  - Cost increased from ~$28,824 to ~$31,981.
-  - Worktime became more evenly distributed (all ≥30h).
-- **Sensitivity Testing:**
-  - Increasing demand, skill needs, or reducing staff → infeasible.
+## 3. Optimization Model
+
+### Objective Function:
+Minimize total salary cost = \( \sum (\text{Worktime}_n \times \text{PayRate}_n) \), with 1.5× multiplier for night shifts.
+
+### Decision Variables:
+- \( x_{n,s} \): Binary variable; 1 if nurse \( n \) is assigned to shift \( s \), 0 otherwise.
+- \( w_n \): Continuous variable; total work hours for nurse \( n \).
+
+### Constraints Implemented:
+- **A.** No more than 2 consecutive shifts per nurse.
+- **B.** Average qualification per shift \( \leq 3 \).
+- **C.** Average seniority per shift \( \geq 4 \).
+- **D.** Minimum skill requirement coverage per department.
+- **E.** Each nurse must work \( \geq 30 \) hours.
+- **F.** Night shifts (between 8PM and 8AM) are paid at 1.5× rate.
+- **Additional:** No overlap in shift assignments, respect nurse vacations, and apply incompatibility and association constraints.
 
 ---
 
-## 📊 Visual Outputs
-- Nurse worktime before vs after constraints.
-- Shift assignments per nurse.
-- Sensitivity test summary.
+## 4. Results and Analysis
+
+### 4.1 Worktime and Cost Comparison
+- **Before constraints**: Some nurses worked < 30 hours; total cost: **$28,824**.
+- **After constraints A–F**: All nurses worked ≥30 hours; cost increased to **$31,981**.
+- Plots show improved fairness and compliance with policy.
+
+### 4.2 Constraint Impact
+- Constraint E (min 30h) reshaped work distribution.
+- Constraints B, C, D introduced higher-skill nurses into more shifts.
+- Constraint F increased cost due to night shift premiums.
 
 ---
 
-## ✍️ Authors
-- Md Tahidul Islam  
-- University of Nebraska at Omaha  
-- Spring 2025, MATH 4320/8326
+## 5. Sensitivity Analysis
+
+Three stress tests were conducted to assess model robustness:
+
+| Scenario | Change Applied | Feasible? |
+|----------|----------------|-----------|
+| 1. Increased demand | Raised Min_Required for all shifts by +1 | ❌ No |
+| 2. Increased skill needs | Added +1 to all skill requirements | ❌ No |
+| 3. Nurse shortage | Removed 2 nurses from the pool | ❌ No |
+
+The model failed to find a solution in all three cases, indicating it operates close to its feasibility limits and is sensitive to small disruptions.
 
 ---
 
-## 📬 Contact
-Feel free to reach out with questions or feedback: [mdtahidulislam@unomaha.edu]
+## 6. Conclusion
+
+The nurse scheduling model successfully assigns nurses while balancing costs, coverage, and institutional policies. However, the solution is highly sensitive to changes in demand and staffing. To increase robustness, future work could include soft constraints, overtime options, or flexibility in qualifications and skill coverage.
 
 ---
 
-## 🛠 Tools Used
-- Python (with Docplex, Pandas, Matplotlib)
-- IBM CPLEX Optimization Studio
-- Jupyter Notebooks
+## 7. Tools Used
+- Python, Jupyter Notebook
+- IBM CPLEX (Docplex)
+- Matplotlib, Pandas
+
+---
+
+## 8. Author Note
+This report was submitted as part of Homework 3 in MATH 4320/8326. All analysis and modeling were conducted by Md Tahidul Islam under the guidance of the course instructor.
 
